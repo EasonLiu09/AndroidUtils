@@ -1,0 +1,4 @@
+include ':network'
+include ':dynamic_dp'
+include ':app'
+rootProject.name = "AndroidUtil"
