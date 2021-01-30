@@ -1,6 +1,29 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'com.jfrog.bintray'
+    id 'com.github.dcendents.android-maven'
+}
+
+ext {
+    bintrayRepo = "AndroidUtil"
+    bintrayName = "com.eason.dynamic_dp"
+
+    libraryName = "dynamic_dp"
+
+    publishedGroupId = 'com.eason.androidutil'
+    artifact = 'dynamic_dp'
+    libraryVersion = '1.0.0'
+
+    libraryDescription = 'Adapting all screen size'
+    siteUrl = 'https://github.com/EasonLiu09/AndroidUtils'
+    gitUrl = 'https://github.com/EasonLiu09/AndroidUtils.git'
+    developerId = 'eason'
+    developerName = 'eason liu'
+    developerEmail = 'eason.liu1@gmail.com'
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
 }
 
 android {
@@ -39,6 +62,10 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -48,4 +75,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+if (project.rootProject.file('local.properties').exists()) {
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
 }

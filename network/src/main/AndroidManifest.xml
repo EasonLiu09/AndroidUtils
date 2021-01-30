@@ -11,7 +11,7 @@
             tools:node="merge">
             <!-- This entry makes WorkManagerInitializer discoverable. -->
             <meta-data
-                android:name="com.eason.NetworkInitializer"
+                android:name="com.eason.network.NetworkInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>

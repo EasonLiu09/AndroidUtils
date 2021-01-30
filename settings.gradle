@@ -1,3 +1,8 @@
+include ':preference'
+include ':activity_ext'
+include ':log'
+include ':mqtt'
+include ':permission'
 include ':network'
 include ':dynamic_dp'
 include ':app'

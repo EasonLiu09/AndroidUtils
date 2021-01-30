@@ -1,9 +1,34 @@
+
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'maven-publish'
-//    id 'com.novoda.bintray-release'
 }
+
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+ext {
+    bintrayRepo = "AndroidUtil"
+    bintrayName = "com.eason.network"
+
+    libraryName = "network"
+
+    publishedGroupId = 'com.eason.androidutil'
+    artifact = 'network'
+    libraryVersion = '1.0.0'
+
+    libraryDescription = 'Utils for Android network'
+    siteUrl = 'https://github.com/EasonLiu09/AndroidUtils'
+    gitUrl = 'https://github.com/EasonLiu09/AndroidUtils.git'
+    developerId = 'eason'
+    developerName = 'eason liu'
+    developerEmail = 'eason.liu1@gmail.com'
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 
 android {
     compileSdkVersion 30
@@ -25,6 +50,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -33,6 +59,11 @@ android {
         jvmTarget = '1.8'
     }
 }
+
+repositories {
+    mavenCentral()
+}
+
 
 dependencies {
 
@@ -47,11 +78,7 @@ dependencies {
     implementation "androidx.startup:startup-runtime:1.0.0"
 }
 
-//publish {
-//    userOrg = 'eason'
-//    groupId = 'com.eason'
-//    artifactId = 'network'
-//    publishVersion = '1.0.0'
-//    desc = 'Boosting development time'
-//    website = ''
-//}
+if (project.rootProject.file('local.properties').exists()) {
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+}

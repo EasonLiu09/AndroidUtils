@@ -37,8 +37,8 @@ object ConnectionStateManager {
         listeners!!.add(listener)
 
         if (!isRegistered) {
-            startListening(context)
             isRegistered = true
+            startListening(context)
         }
     }
 
@@ -53,6 +53,7 @@ object ConnectionStateManager {
         }
     }
 
+    @Suppress("DEPRECATION")
     @SuppressLint("MissingPermission")
     private fun startListening(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -78,7 +79,7 @@ object ConnectionStateManager {
                     }
 
                     intent?.let {
-                        val networkInfo = it.getParcelableExtra<NetworkInfo>(WifiManager.EXTRA_NETWORK_INFO) ?: null
+                        val networkInfo = it.getParcelableExtra<NetworkInfo>(WifiManager.EXTRA_NETWORK_INFO)
 
                         if (networkInfo != null && networkInfo.isConnected) {
                             listeners?.forEach { listener -> listener.onAvailable() }
