@@ -33,7 +33,7 @@ android {
 }
 
 repositories {
-    maven { url 'https://dl.bintray.com/easonliu09/AndroidUtil' }
+    maven { url 'https://dl.bintray.com/easonliu09/Utils' }
 }
 
 dependencies {
@@ -43,17 +43,16 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation project(path: ':permission')
-    implementation project(path: ':mqtt')
-    implementation project(path: ':log')
-    implementation project(path: ':activity_ext')
-    implementation project(path: ':preference')
+//    implementation project(path: ':permission')
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation "androidx.startup:startup-runtime:1.0.0"
-
-    implementation 'com.eason.androidutil:dynamic_dp:1.0.0'
-    implementation 'com.eason.androidutil:network:1.0.0'
+    implementation 'com.eason.utils:network:1.0.1'
+    implementation 'com.eason.utils:mqtt:1.0.0'
+    implementation 'com.eason.utils:dynamic_dp:1.0.0'
+    implementation 'com.eason.utils:preference:1.0.0'
+    implementation 'com.eason.utils:permission:1.0.0'
+    implementation 'com.eason.utils:log:1.0.1'
+    implementation 'com.eason.utils:activity_ext:1.0.0'
 }

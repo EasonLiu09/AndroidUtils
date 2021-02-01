@@ -26,7 +26,7 @@ inline fun <reified T : AppCompatActivity> newIntent(context: Context): Intent {
     return Intent(context, T::class.java)
 }
 
-fun Context.systemNavigationMode(): NavigationMode {
+fun Context.getNavigationMode(): NavigationMode {
     return with(
         resources.getIdentifier(
             "config_navBarInteractionMode",

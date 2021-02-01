@@ -19,7 +19,7 @@ object NetworkManager {
     }
 
     @SuppressLint("MissingPermission")
-    public fun isWiFiConnectedWithoutInternet(): Boolean {
+    public fun isWiFiConnected(): Boolean {
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 

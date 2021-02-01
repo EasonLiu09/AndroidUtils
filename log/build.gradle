@@ -1,6 +1,88 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'com.jfrog.bintray'
+    id 'maven-publish'
+}
+
+def libVersion = '1.0.1'
+
+publishing {
+    publications {
+        Production(MavenPublication) {
+            artifact("$buildDir/outputs/aar/log-release.aar")
+            groupId 'com.eason.utils'
+            artifactId 'log'
+            version libVersion
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+//            pom.withXml {
+//                def dependenciesNode = asNode().appendNode('dependencies')
+//
+//                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+//                configurations.implementation.allDependencies.each {
+//                    if (it.name.contains("mqtt")) {
+//                        def dependencyNode = dependenciesNode.appendNode('dependency')
+//                        dependencyNode.appendNode('groupId', it.group)
+//                        dependencyNode.appendNode('artifactId', it.name)
+//                        dependencyNode.appendNode('version', it.version)
+//                    }
+//                }
+//            }
+        }
+    }
+}
+
+bintray {
+    // Get Bintray credential from environment variable
+    user = BINTRAY_USER // Get bintray User
+    key = BINTRAY_API_KEY // Get bintray Secret Key
+//    configurations = ['archives']
+    pkg {
+        repo = 'Utils'
+        name = 'com.eason.log'
+        userOrg = 'easonliu09'
+        licenses = ['Apache-2.0']
+        desc = 'Simplify usage of logd, e, v, i'
+        override = true
+        websiteUrl = "https://github.com/EasonLiu09/AndroidUtils"
+        vcsUrl = "https://github.com/EasonLiu09/AndroidUtils.git"
+        publish = true
+        version {
+            name = libVersion
+        }
+    }
+    publications = ['Production']
+
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.0"
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0.1"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 android {
@@ -38,7 +120,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

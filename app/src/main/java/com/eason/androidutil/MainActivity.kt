@@ -1,16 +1,22 @@
 package com.eason.androidutil
 
 import android.Manifest
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.eason.log.*
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.eason.activity_ext.NavigationMode
+import com.eason.activity_ext.getNavigationMode
+import com.eason.log.logd
+import com.eason.log.logv
+import com.eason.mqtt.MCallbackAdapter
 import com.eason.mqtt.MqttManager
 import com.eason.mqtt.initMqtt
 import com.eason.network.ConnectionStateManager
 import com.eason.network.NetworkManager
 import com.eason.permissionmanager.PermissionManager
 import com.eason.preference.PreferenceManager
+import com.eason.preference.PreferenceManager.putValue
 
 class MainActivity : AppCompatActivity(),
     ConnectionStateManager.OnConnectionStateListener,
@@ -20,43 +26,63 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        logd("is connected : ${NetworkManager.isInternetConnected()}")
+        logd("is wifi connected: ${NetworkManager.isWiFiConnected()}")
+        logv("is Cellular ${NetworkManager.isCellular()}")
+        logd("navigation mode : ${getNavigationMode()}")
 
-        logd(NetworkManager.getBssid())
 
-        PermissionManager
-            .with(this)
-            .checkPermission(Manifest.permission.WRITE_CALENDAR, 1)
+//        initMqtt { url = "tcp://210.61.46.162:2883" }
 
-        PreferenceManager.init(this)
+        findViewById<Button>(R.id.button).setOnClickListener {
+            PermissionManager
+                .with(this)
+                .checkPermission(Manifest.permission.WRITE_CALENDAR, 1)
+//            MqttManager.sub(
+//                topic = "cc50e30002fd/eHouse/DoorSensor/Status",
+//                callback = object : MCallbackAdapter() {
+//                    override fun messageArrived(topic: String, message: String) {
+//                        super.messageArrived(topic, message)
+//                        Log.d("EASON", "message : $message")
+//                    }
+//                }
+//            )
+//            Log.d("EASON", "from preference : ${PreferenceManager.get("test", 1)}")
+
+        }
+//
+//        logv("navigation mode : ${getNavigationMode()}")
+//
+//        PreferenceManager.init(this, "TEST")
+//        PreferenceManager.edit {
+//            putValue("test", 123)
+//        }
     }
 
     override fun onResume() {
         super.onResume()
-        ConnectionStateManager.register(this, this)
+//        ConnectionStateManager.register(this, this)
     }
 
     override fun onPause() {
         super.onPause()
-        ConnectionStateManager.unregister(this, this)
+//        ConnectionStateManager.unregister(this, this)
     }
 
     override fun onAvailable() {
-        logd("onAvailable")
+
     }
 
     override fun onLost() {
-        logd("onLost")
     }
 
     override fun permissionsGranted(requestCode: Int, permissions: Array<String>) {
-        logv("permission granted.")
     }
 
     override fun permissionsDenied(requestCode: Int, permissions: Array<String>) {
-        loge("permission denied.")
     }
 
     override fun permissionsPermDenied(requestCode: Int, permissions: Array<String>) {
-        logi("permission perm denied.")
+        Log.d("EASON", "permission perm denied.")
     }
 }

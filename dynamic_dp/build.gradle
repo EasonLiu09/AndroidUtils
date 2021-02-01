@@ -2,28 +2,59 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'com.jfrog.bintray'
-    id 'com.github.dcendents.android-maven'
+    id 'maven-publish'
 }
 
-ext {
-    bintrayRepo = "AndroidUtil"
-    bintrayName = "com.eason.dynamic_dp"
+//Adapting all screen size
+def libVersion = '1.0.0'
 
-    libraryName = "dynamic_dp"
+publishing {
+    publications {
+        Production(MavenPublication) {
+            artifact("$buildDir/outputs/aar/dynamic_dp-release.aar")
+            groupId 'com.eason.utils'
+            artifactId 'dynamic_dp'
+            version libVersion
 
-    publishedGroupId = 'com.eason.androidutil'
-    artifact = 'dynamic_dp'
-    libraryVersion = '1.0.0'
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+//            pom.withXml {
+//                def dependenciesNode = asNode().appendNode('dependencies')
+//
+//                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+//                configurations.implementation.allDependencies.each {
+//                    if (it.name.contains("mqtt")) {
+//                        def dependencyNode = dependenciesNode.appendNode('dependency')
+//                        dependencyNode.appendNode('groupId', it.group)
+//                        dependencyNode.appendNode('artifactId', it.name)
+//                        dependencyNode.appendNode('version', it.version)
+//                    }
+//                }
+//            }
+        }
+    }
+}
 
-    libraryDescription = 'Adapting all screen size'
-    siteUrl = 'https://github.com/EasonLiu09/AndroidUtils'
-    gitUrl = 'https://github.com/EasonLiu09/AndroidUtils.git'
-    developerId = 'eason'
-    developerName = 'eason liu'
-    developerEmail = 'eason.liu1@gmail.com'
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+bintray {
+    // Get Bintray credential from environment variable
+    user = BINTRAY_USER // Get bintray User
+    key = BINTRAY_API_KEY // Get bintray Secret Key
+//    configurations = ['archives']
+    pkg {
+        repo = 'Utils'
+        name = 'com.eason.dynamic_dp'
+        userOrg = 'easonliu09'
+        licenses = ['Apache-2.0']
+        desc = 'Adapting all screen size'
+        override = true
+        websiteUrl = "https://github.com/EasonLiu09/AndroidUtils"
+        vcsUrl = "https://github.com/EasonLiu09/AndroidUtils.git"
+        publish = true
+        version {
+            name = libVersion
+        }
+    }
+    publications = ['Production']
+
 }
 
 android {
@@ -75,9 +106,4 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-}
-
-if (project.rootProject.file('local.properties').exists()) {
-    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
 }

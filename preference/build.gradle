@@ -1,6 +1,59 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'com.jfrog.bintray'
+    id 'maven-publish'
+}
+
+def libVersion = '1.0.0'
+
+publishing {
+    publications {
+        Production(MavenPublication) {
+            artifact("$buildDir/outputs/aar/preference-release.aar")
+            groupId 'com.eason.utils'
+            artifactId 'preference'
+            version libVersion
+
+            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
+                    if (it.name.contains("security-crypto")) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    // Get Bintray credential from environment variable
+    user = BINTRAY_USER // Get bintray User
+    key = BINTRAY_API_KEY // Get bintray Secret Key
+//    configurations = ['archives']
+    pkg {
+        repo = 'Utils'
+        name = 'com.eason.preference'
+        userOrg = 'easonliu09'
+        licenses = ['Apache-2.0']
+        desc = 'Simplify usage of preference'
+        override = true
+        websiteUrl = "https://github.com/EasonLiu09/AndroidUtils"
+        vcsUrl = "https://github.com/EasonLiu09/AndroidUtils.git"
+        publish = true
+        version {
+            name = libVersion
+        }
+    }
+    publications = ['Production']
+
 }
 
 android {

@@ -1,12 +1,12 @@
 package com.eason.mqtt
 
-abstract class MCallbackAdapter {
-    fun connectionLost(cause: Throwable?) {}
-    fun messageArrived(topic: String, message: String) {}
-    fun deliveryComplete(token: DeliveryToken) {}
-    fun pubMessage(token: DeliveryToken) {}
-    fun connectionFailure(cause: Throwable?) {}
-    fun unSubSuccess() {}
-    fun unSubFailure(cause: Throwable?) {}
-    fun connectionSucceed() {}
+abstract class MCallbackAdapter : MCallback {
+    override fun connectionLost(cause: Throwable?) {}
+    override fun messageArrived(topic: String, message: String) {}
+    override fun deliveryComplete(token: DeliveryToken) {}
+    override fun pubMessage(token: DeliveryToken) {}
+    override fun connectionFailure(cause: Throwable?) {}
+    override fun unSubSuccess() {}
+    override fun unSubFailure(cause: Throwable?) {}
+    override fun connectionSucceed() {}
 }
